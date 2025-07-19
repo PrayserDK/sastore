@@ -1,9 +1,8 @@
 name: SAStore
 version: "1.2.1"
-description: "Modtag betalinger hurtigt og nemt"
+description: "Modtag betalinger hurtigt og nemt - fork af PrayserDK"
 main: hundeklemmen.nikolaialex05.SAStore
-authors: [Hundeklemmen]
-depend: [Skript]
+authors: [Hundeklemmen, PrayserDK]
 commands:
   sastore:
     description: Se informationer omkring SA-Store
