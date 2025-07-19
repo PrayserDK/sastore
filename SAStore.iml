@@ -4,9 +4,7 @@
   <component name="FacetManager">
     <facet type="minecraft" name="Minecraft">
       <configuration>
-        <autoDetectTypes>
-          <platformType>SPIGOT</platformType>
-        </autoDetectTypes>
+@@ -9,46 +9,4 @@
       </configuration>
     </facet>
   </component>
