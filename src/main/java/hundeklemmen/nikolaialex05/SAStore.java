@@ -28,7 +28,7 @@ public class SAStore extends JavaPlugin {
     private static DecimalFormat format = new DecimalFormat("##.##");
 
     public static SAStore instance;
-    public static String prefix = "&8[&dSA&fStore &7// &fArcMC.dk&8]&r";
+    public static String prefix = "&8[&dSA&fStore &7// &fRobot&8]&r";
     public static File configFile;
     public static FileConfiguration config;
     public static File spigotFile;
@@ -176,3 +176,4 @@ public class SAStore extends JavaPlugin {
         }
     }
 }
+
