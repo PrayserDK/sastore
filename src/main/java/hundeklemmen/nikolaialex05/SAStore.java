@@ -105,29 +105,38 @@ public class SAStore extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(SAStore.instance, new Runnable() {
             @Override
             public void run() {
-                String svar = Utils.get("https://api.superawesome.dk/storeapi/v2/purchases", SAStore.authorization);
+                try {
+                    String svar = Utils.get("https://api.superawesome.dk/storeapi/v2/purchases", SAStore.authorization);
 
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<betaling>>(){}.getType();
-                List<betaling> betalinger = gson.fromJson(svar, listType);
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<betaling>>(){}.getType();
+                    List<betaling> betalinger = gson.fromJson(svar, listType);
 
-                Bukkit.getScheduler().scheduleSyncDelayedTask(SAStore.instance, new Runnable() {
-                    @Override
-                    public void run() {
-                        for (betaling betal : betalinger) {
-                            Bukkit.getServer().getPluginManager().callEvent(
-                                    new betalingEvent(
-                                            Bukkit.getOfflinePlayer(
-                                                    UUID.fromString(betal.getUuid())
-                                            ),
-                                            betal.getProduct(),
-                                            betal.getAmount(),
-                                            new id(betal.getId())
-                                    )
-                            );
-                        };
-                    }
-                }, 0);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(SAStore.instance, new Runnable() {
+                        @Override
+                        public void run() {
+                            for (betaling betal : betalinger) {
+                                try {
+                                    Bukkit.getServer().getPluginManager().callEvent(
+                                            new betalingEvent(
+                                                    Bukkit.getOfflinePlayer(
+                                                            UUID.fromString(betal.getUuid())
+                                                    ),
+                                                    betal.getProduct(),
+                                                    betal.getAmount(),
+                                                    new id(betal.getId())
+                                            )
+                                    );
+                                } catch (Exception e) {
+                                    SAStore.log.warning("Der skete en fejl ved behandling af betaling: " + e.getMessage());
+                                }
+                            }
+                        }
+                    }, 0);
+                } catch (Exception e) {
+                    SAStore.log.warning("Kunne ikke hente betalinger fra APIen");
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -139,28 +148,37 @@ public class SAStore extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(SAStore.instance, new Runnable() {
             @Override
             public void run() {
-                String svar = Utils.get("https://api.superawesome.dk/storeapi/v2/votes", SAStore.authorization);
+                try {
+                    String svar = Utils.get("https://api.superawesome.dk/storeapi/v2/votes", SAStore.authorization);
 
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<vote>>(){}.getType();
-                List<vote> votes = gson.fromJson(svar, listType);
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<vote>>(){}.getType();
+                    List<vote> votes = gson.fromJson(svar, listType);
 
-                Bukkit.getScheduler().scheduleSyncDelayedTask(SAStore.instance, new Runnable() {
-                    @Override
-                    public void run() {
-                        for (vote vote : votes) {
-                            Bukkit.getServer().getPluginManager().callEvent(
-                                    new voteEvent(
-                                            Bukkit.getOfflinePlayer(
-                                                    UUID.fromString(vote.getUuid())
-                                            ),
-                                            new ch.njol.skript.util.Date(vote.getDate()),
-                                            new id(vote.getId())
-                                    )
-                            );
-                        };
-                    }
-                }, 0);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(SAStore.instance, new Runnable() {
+                        @Override
+                        public void run() {
+                            for (vote vote : votes) {
+                                try {
+                                    Bukkit.getServer().getPluginManager().callEvent(
+                                            new voteEvent(
+                                                    Bukkit.getOfflinePlayer(
+                                                            UUID.fromString(vote.getUuid())
+                                                    ),
+                                                    new ch.njol.skript.util.Date(vote.getDate()),
+                                                    new id(vote.getId())
+                                            )
+                                    );
+                                } catch (Exception e) {
+                                    SAStore.log.warning("Der skete en fejl ved behandling af vote: " + e.getMessage());
+                                }
+                            }
+                        }
+                    }, 0);
+                } catch (Exception e) {
+                    SAStore.log.warning("Kunne ikke hente votes fra APIen");
+                    e.printStackTrace();
+                }
             }
         });
     }
